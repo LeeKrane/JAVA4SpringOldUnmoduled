@@ -29,12 +29,10 @@ public class WorkingHourController {
 	@GetMapping(path = "/workinghours/{id}")
 	public WorkingHours findWorkingHoursById (@PathVariable(value = "id") Integer id) {
 		Optional<WorkingHours> wh = whRepository.findById(id);
-		if (wh.isPresent()) {
+		if (wh.isPresent())
 			return wh.get();
-		}
-		else {
+		else
 			throw new WorkingHoursNotFoundException("WH not found: " + id);
-		}
 	}
 	
 	@GetMapping(path = "/workinghours")
@@ -45,7 +43,7 @@ public class WorkingHourController {
 	@PostMapping(path = "/workinghours/{empid}")
 	public ResponseEntity<WorkingHours> createWH (@PathVariable Integer empid, @Valid @RequestBody WorkingHours wh) {
 		Optional<Employee> emp = employeeRepository.findById(empid);
-		if (!emp.isPresent())
+		if (emp.isEmpty())
 			throw new EmployeeNotFoundException("Employee not found: " + empid);
 		if (wh.getWhId() != null)
 			throw new WorkingHoursHasIdException("WH has id: " + wh.getWhId());
